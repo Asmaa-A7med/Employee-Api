@@ -21,7 +21,9 @@ namespace Service
 
         //Task<bool> DeleteEmployeesAsync(List<int> ids);
 
-        Task<(List<Employee> Employees, int TotalCount, int TotalPages)> GetPaginatedEmployeesAsync(int pageNumber, int pageSize);
+        Task<(List<Employee> Employees, int TotalCount, int TotalPages)> GetPaginatedEmployeesAsync(
+    int pageNumber, int pageSize, string sortKey, string sortDirection);
+
 
 
     }

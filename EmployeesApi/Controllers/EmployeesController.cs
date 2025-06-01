@@ -108,12 +108,16 @@ namespace webApp.Controllers
             return NoContent();
         }
         [HttpGet("paginated")]
-        public async Task<IActionResult> GetEmployeesPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetEmployeesPaginated(
+     [FromQuery] int pageNumber = 1,
+     [FromQuery] int pageSize = 10,
+     [FromQuery] string sortKey = "name",
+     [FromQuery] string sortDirection = "asc")
         {
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
 
-            var result = await _employeeService.GetPaginatedEmployeesAsync(pageNumber, pageSize);
+            var result = await _employeeService.GetPaginatedEmployeesAsync(pageNumber, pageSize, sortKey, sortDirection);
 
             var response = new
             {
@@ -126,6 +130,7 @@ namespace webApp.Controllers
 
             return Ok(response);
         }
+
 
 
 

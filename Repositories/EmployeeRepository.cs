@@ -67,14 +67,32 @@ namespace Repositories
         {
             _context.Employees.Update(employee);
         }
-        public async Task<List<Employee>> GetPaginatedEmployeesAsync(int pageNumber, int pageSize)
+        public async Task<List<Employee>> GetPaginatedEmployeesAsync(int pageNumber, int pageSize, string sortKey, string sortDirection)
         {
-            return await _context.Employees
-                                 .Skip((pageNumber - 1) * pageSize)
-                                 .Take(pageSize)
-                                 .ToListAsync();
+            IQueryable<Employee> query = _context.Employees;
+
+            // Apply sorting
+            if (!string.IsNullOrEmpty(sortKey))
+            {
+                bool ascending = sortDirection?.ToLower() == "asc";
+
+                query = sortKey.ToLower() switch
+                {
+                    "name" => ascending ? query.OrderBy(e => e.Name) : query.OrderByDescending(e => e.Name),
+                    "email" => ascending ? query.OrderBy(e => e.Email) : query.OrderByDescending(e => e.Email),
+                  //  "phone" => ascending ? query.OrderBy(e => e.Phone) : query.OrderByDescending(e => e.Phone),
+                    _ => query.OrderBy(e => e.Name) // default
+                };
+            }
+
+            // Apply pagination
+            return await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
-      
+
+
 
         public async Task<int> GetTotalCountAsync()
         {

@@ -89,14 +89,16 @@ namespace Service
         }
 
 
-
-        public async Task<(List<Employee> Employees, int TotalCount, int TotalPages)> GetPaginatedEmployeesAsync(int pageNumber, int pageSize)
+        public async Task<(List<Employee> Employees, int TotalCount, int TotalPages)> GetPaginatedEmployeesAsync(
+            int pageNumber, int pageSize, string sortKey, string sortDirection)
         {
-            var employees = await _unitOfWork.Employees.GetPaginatedEmployeesAsync(pageNumber, pageSize);
+            var employees = await _unitOfWork.Employees.GetPaginatedEmployeesAsync(pageNumber, pageSize, sortKey, sortDirection);
             var totalCount = await _unitOfWork.Employees.GetTotalCountAsync();
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
             return (employees, totalCount, totalPages);
         }
+
 
 
 

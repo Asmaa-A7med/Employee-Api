@@ -20,8 +20,9 @@ namespace Repositories
         void Delete(Employee employee);
         void DeleteRange(IEnumerable<Employee> employees);
         void Update(Employee employee);
-        Task<List<Employee>> GetPaginatedEmployeesAsync(int pageNumber, int pageSize);
-        
+        Task<List<Employee>> GetPaginatedEmployeesAsync(int pageNumber, int pageSize, string sortKey, string sortDirection);
+
+
         Task<int> GetTotalCountAsync();
        
 
